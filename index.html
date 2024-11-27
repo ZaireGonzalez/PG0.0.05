@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Agrícola</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8em;
+        }
+
+        nav {
+            display: flex;
+            background-color: #218838;
+            padding: 10px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        section {
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Formulario y tablas */
+        form, table {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        form input, form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #28a745;
+            color: white;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #f3f3f3;
+        }
+
+        table tbody tr:hover {
+            background-color: #e9f7ea;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            form input, form button, table th, table td {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>Gestión Agrícola</header>
+    <nav>
+        <a href="#" data-module="venta">Venta</a>
+        <a href="#" data-module="anulacion">Anulación</a>
+        <a href="#" data-module="cierre">Cierre</a>
+        <a href="#" data-module="configuracion">Configuración</a>
+        <a href="#" data-module="proveedor">Proveedor</a>
+        <a href="#" data-module="inventario">Inventario</a>
+    </nav>
+    <main>
+        <!-- Módulo Venta -->
+        <section id="venta" class="active">
+            <h1>Venta</h1>
+            <form id="form-venta">
+                <label for="producto">Producto</label>
+                <input type="text" id="producto" name="producto" placeholder="Ej: Tomate" required>
+
+                <label for="cantidad">Cantidad (kg)</label>
+                <input type="number" id="cantidad" name="cantidad" placeholder="Ej: 20" required>
+
+                <label for="precio">Precio ($)</label>
+                <input type="number" id="precio" name="precio" placeholder="Ej: 300" required>
+
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" required>
+
+                <label for="cliente">Cliente</label>
+                <input type="text" id="cliente" name="cliente" placeholder="Ej: Pedro Gómez" required>
+
+                <button type="submit">Registrar Venta</button>
+            </form>
+
+            <h2>Ventas Registradas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad (kg)</th>
+                        <th>Precio ($)</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-ventas">
+                    <!-- Filas dinámicas -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Módulo Anulación -->
+        <section id="anulacion">
+            <h1>Anulación</h1>
+            <p>Esta sección permitirá anular ventas previamente registradas.</p>
+        </section>
+
+        <!-- Módulo Cierre -->
+        <section id="cierre">
+            <h1>Cierre</h1>
+            <p>Resumen y cierre de las operaciones del día.</p>
+        </section>
+
+        <!-- Módulo Configuración -->
+        <section id="configuracion">
+            <h1>Configuración</h1>
+            <p>Opciones de configuración del sistema.</p>
+        </section>
+
+        <!-- Módulo Proveedor -->
+        <section id="proveedor">
+            <h1>Proveedor</h1>
+            <p>Gestión de proveedores.</p>
+        </section>
+
+        <!-- Módulo Inventario -->
+        <section id="inventario">
+            <h1>Inventario</h1>
+            <p>Control de inventarios agrícolas.</p>
+        </section>
+    </main>
+
+    <script>
+        // Navegación entre módulos
+        const navLinks = document.querySelectorAll('nav a');
+        const sections = document.querySelectorAll('section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                const module = link.getAttribute('data-module');
+
+                // Mostrar el módulo seleccionado
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(module).classList.add('active');
+            });
+        });
+
+        // Registro de ventas
+        const form = document.getElementById('form-venta');
+        const tablaVentas = document.getElementById('tabla-ventas');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const producto = document.getElementById('producto').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const precio = document.getElementById('precio').value;
+            const fecha = document.getElementById('fecha').value;
+            const cliente = document.getElementById('cliente').value;
+
+            const nuevaFila = `
+                <tr>
+                    <td>${producto}</td>
+                    <td>${cantidad} kg</td>
+                    <td>$${precio}</td>
+                    <td>${fecha}</td>
+                    <td>${cliente}</td>
+                </tr>
+            `;
+            tablaVentas.innerHTML += nuevaFila;
+
+            form.reset();
+        });
+    </script>
+</body>
+</html>
